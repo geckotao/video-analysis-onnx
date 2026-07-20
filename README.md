@@ -23,7 +23,6 @@ CUDA加速版源码：https://github.com/geckotao/video-analysis/
 
 支持中文路径与文件名
 
-依赖
-
-pip install onnxruntime-directml opencv-python pyside6  numpy configparser
+环境：python 3.11+
+依赖：onnxruntime-directml opencv-python pyside6  numpy configparser
 
