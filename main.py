@@ -439,7 +439,7 @@ class MainWindow(QMainWindow):
             self.targets_label.setText(f"截图数（未去重）: {targets}")
 
     def _update_buttons_ui(self, start_en: bool, pause_en: bool, stop_en: bool):
-        """【关键】通过信号更新按钮状态"""
+        """通过信号更新按钮状态"""
         if hasattr(self, 'start_button'):
             self.start_button.setEnabled(start_en)
         if hasattr(self, 'pause_button'):
@@ -532,7 +532,7 @@ class MainWindow(QMainWindow):
         if success:
             self._model_loaded = True
             self.update_status("模型加载完成，可开始处理")
-            self.buttons_signal.emit(True, False, False)  # 【修复】通过信号
+            self.buttons_signal.emit(True, False, False)  # 通过信号
             self.log_message("程序初始化完成")
         else:
             self.update_status("模型加载失败，请检查配置或重启程序")
@@ -541,7 +541,7 @@ class MainWindow(QMainWindow):
                 "1. 模型文件路径是否正确\n"
                 "2. onnxruntime 是否安装\n"
                 "3. DirectML 依赖是否完整")
-            self.buttons_signal.emit(False, False, False)  # 【修复】通过信号
+            self.buttons_signal.emit(False, False, False)  # 通过信号
 
     def setup_ui(self):
         central_widget = QWidget()
@@ -1129,7 +1129,7 @@ class MainWindow(QMainWindow):
         self._processing_finished_normally = False
         with self._paths_lock:
             self._generated_screenshot_paths.clear()
-        # 【修复】通过信号更新按钮
+        # 通过信号更新按钮
         self.buttons_signal.emit(False, True, True)
         self.log_message("开始处理...")
         threading.Thread(target=self.process_videos, args=(
@@ -1159,7 +1159,7 @@ class MainWindow(QMainWindow):
                     self.save_queue.task_done()
                 except:
                     break
-            # 【修复】通过信号更新按钮
+            # 通过信号更新按钮
             self.buttons_signal.emit(True, False, False)
 
     def process_videos(self, file_paths, save_folder, selected_classes, skip_frames, only_moving, annotate_objects, confidence_threshold):
@@ -1310,7 +1310,7 @@ class MainWindow(QMainWindow):
             self.log_message(f"处理出错：{e}\n{traceback.format_exc()}")
             self.update_status(f"错误：{str(e)}")
         finally:
-            # 【关键修复】通过信号更新按钮，不在子线程直接操作 UI
+            # 通过信号更新按钮，不在子线程直接操作 UI
             self.buttons_signal.emit(True, False, False)
             if self.stopped:
                 self.update_status("处理已停止")
