@@ -973,7 +973,7 @@ class MainWindow(QMainWindow):
             return
         cap = None
         try:
-            cap = cv2.VideoCapture(self.file_paths[0])
+            cap = cv2.VideoCapture(self.file_paths[0], cv2.CAP_FFMPEG)
             ret, frame = cap.read()
             if not ret:
                 self.log_message("错误：无法读取视频首帧")
@@ -1171,7 +1171,7 @@ class MainWindow(QMainWindow):
                     break
                 self._processing_file_index = file_idx
                 self.current_frame = 0
-                cap_temp = cv2.VideoCapture(file_path)
+                cap_temp = cv2.VideoCapture(file_path, cv2.CAP_FFMPEG)
                 total_frames = int(cap_temp.get(cv2.CAP_PROP_FRAME_COUNT))
                 cap_temp.release()
                 self._progress_total = total_frames
@@ -1180,7 +1180,7 @@ class MainWindow(QMainWindow):
                 movement_buffer = {}
                 frame_queue = queue.Queue(maxsize=10)
                 def read_frames():
-                    cap = cv2.VideoCapture(file_path)
+                    cap = cv2.VideoCapture(file_path, cv2.CAP_FFMPEG)
                     frame_idx = 0
                     try:
                         while cap.isOpened() and not self.stopped:
